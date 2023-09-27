@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
   root 'home#index'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
-
-  resources :product_types
-
-  resources :items
+  namespace :api do
+    namespace :v1 do
+      resources :product_types do
+        resources :items
+      end
+    end
+  end
 end
