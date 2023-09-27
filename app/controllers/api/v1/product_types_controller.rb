@@ -3,7 +3,13 @@ class Api::V1::ProductTypesController < ApplicationController
 
   # List all product types
   def index
-    @product_types = ProductType.all
+    @product_types = ProductType.all.includes(:items).map do |pt|
+      {
+        id: pt.id,
+        name: pt.name,
+        items_count: pt.items.count # This line calculates the total count for each ProductType's items
+      }
+    end
     render json: @product_types
   end
 
