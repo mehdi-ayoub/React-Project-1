@@ -1,65 +1,44 @@
 class Api::V1::ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_product_type, only: [:index]
+  before_action :set_item, only: [:show, :update, :destroy]
 
-  # GET /items
-  # GET /items.json
+  # GET /product_types/:product_type_id/items
   def index
-    product_type = ProductType.find(params[:product_type_id])
-    @items = product_type.items
+    @items = @product_type.items
     render json: @items
   end
 
   # GET /items/1
-  # GET /items/1.json
   def show
-  end
-
-  # GET /items/new
-  def new
-    @item = Item.new
-  end
-
-  # GET /items/1/edit
-  def edit
+    render json: @item
   end
 
   # POST /items
-  # POST /items.json
   def create
     @item = Item.new(item_params)
 
-    respond_to do |format|
-      if @item.save
-        format.html { redirect_to @item, notice: 'Item was successfully created.' }
-        format.json { render :show, status: :created, location: @item }
-      else
-        format.html { render :new }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.save
+      render json: { message: 'Item was successfully created.', item: @item }, status: :created
+    else
+      render json: { errors: @item.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /items/1
-  # PATCH/PUT /items/1.json
   def update
-    respond_to do |format|
-      if @item.update(item_params)
-        format.html { redirect_to @item, notice: 'Item was successfully updated.' }
-        format.json { render :show, status: :ok, location: @item }
-      else
-        format.html { render :edit }
-        format.json { render json: @item.errors, status: :unprocessable_entity }
-      end
+    if @item.update(item_params)
+      render json: { message: 'Item was successfully updated.', item: @item }, status: :ok
+    else
+      render json: { errors: @item.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   # DELETE /items/1
-  # DELETE /items/1.json
   def destroy
-    @item.destroy
-    respond_to do |format|
-      format.html { redirect_to items_url, notice: 'Item was successfully destroyed.' }
-      format.json { head :no_content }
+    if @item.destroy
+      render json: { message: 'Item was successfully destroyed.' }, status: :ok
+    else
+      render json: { errors: "Failed to delete the item" }, status: :unprocessable_entity
     end
   end
 
@@ -67,16 +46,20 @@ class Api::V1::ItemsController < ApplicationController
   def search
     @search_query = params[:query]
     @items = Item.where("serial_number LIKE ?", "%#{@search_query}%")
+    render json: @items
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_item
-      @item = Item.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def item_params
-      params.require(:item).permit(:product_type_id, :serial_number, :sold)
-    end
+  def set_product_type
+    @product_type = ProductType.find(params[:product_type_id])
+  end
+
+  def set_item
+    @item = Item.find(params[:id])
+  end
+
+  def item_params
+    params.require(:item).permit(:product_type_id, :serial_number, :sold)
+  end
 end

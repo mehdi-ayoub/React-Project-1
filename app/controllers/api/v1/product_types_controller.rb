@@ -1,40 +1,44 @@
 class Api::V1::ProductTypesController < ApplicationController
-  before_action :set_product_type, only: [:edit, :update, :destroy]
+  before_action :set_product_type, only: [:show, :update, :destroy]
 
+  # List all product types
   def index
     @product_types = ProductType.all
-
     render json: @product_types
   end
 
-  def new
-    @product_type = ProductType.new
+  # Show a specific product type
+  def show
+    render json: @product_type
   end
 
+  # Create a new product type
   def create
     @product_type = ProductType.new(product_type_params)
+
     if @product_type.save
-      redirect_to product_types_path, notice: 'Product Type created successfully'
+      render json: { message: 'Product Type created successfully', product_type: @product_type }, status: :created
     else
-      render :new
+      render json: { errors: @product_type.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  def edit
-    # To render the edit form
-  end
-
+  # Update a specific product type
   def update
     if @product_type.update(product_type_params)
-      redirect_to product_types_path, notice: 'Product Type updated successfully'
+      render json: { message: 'Product Type updated successfully', product_type: @product_type }, status: :ok
     else
-      render :edit
+      render json: { errors: @product_type.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
+  # Delete a specific product type
   def destroy
-    @product_type.destroy
-    redirect_to product_types_path, notice: 'Product Type deleted successfully'
+    if @product_type.destroy
+      render json: { message: 'Product Type deleted successfully' }, status: :ok
+    else
+      render json: { errors: "Failed to delete the product type" }, status: :unprocessable_entity
+    end
   end
 
   private
