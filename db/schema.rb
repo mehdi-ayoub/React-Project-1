@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_27_035318) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_27_044234) do
   create_table "items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "product_type_id", null: false
     t.string "serial_number"
-    t.boolean "sold", default: false
+    t.boolean "sold"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["product_type_id"], name: "index_items_on_product_type_id"
