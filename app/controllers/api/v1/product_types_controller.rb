@@ -31,8 +31,9 @@ class Api::V1::ProductTypesController < ApplicationController
 
   # Update a specific product type
   def update
+    @product_type = ProductType.find(params[:id])
     if @product_type.update(product_type_params)
-      render json: { message: 'Product Type updated successfully', product_type: @product_type }, status: :ok
+      render json: @product_type
     else
       render json: { errors: @product_type.errors.full_messages }, status: :unprocessable_entity
     end
