@@ -5,16 +5,16 @@ function ProductTypesTable() {
     // Define your state
     const [productTypes, setProductTypes] = useState([]);
 
-    // Use the useEffect hook to make the API call when the component mounts
     useEffect(() => {
-        axios.get("/api/v1/product_types")
+        axios.get('http://localhost:3000/api/v1/product_types')
             .then(response => {
                 setProductTypes(response.data);
             })
             .catch(error => {
-                console.error("Error fetching the product types:", error);
+                console.error("Error fetching data:", error);
             });
-    }, []);  // Empty dependency array means this useEffect runs once when component mounts
+    }, []);
+
 
     // Function to handle Edit click (this will be elaborated later)
     const handleEditClick = (id) => {
