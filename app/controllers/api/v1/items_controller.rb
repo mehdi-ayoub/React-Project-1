@@ -1,10 +1,12 @@
-class ItemsController < ApplicationController
+class Api::V1::ItemsController < ApplicationController
   before_action :set_item, only: [:show, :edit, :update, :destroy]
 
   # GET /items
   # GET /items.json
   def index
-    @items = Item.all
+    product_type = ProductType.find(params[:product_type_id])
+    @items = product_type.items
+    render json: @items
   end
 
   # GET /items/1

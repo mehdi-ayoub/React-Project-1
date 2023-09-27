@@ -1,8 +1,10 @@
-class ProductTypesController < ApplicationController
+class Api::V1::ProductTypesController < ApplicationController
   before_action :set_product_type, only: [:edit, :update, :destroy]
 
   def index
     @product_types = ProductType.all
+
+    render json: @product_types
   end
 
   def new
