@@ -10,5 +10,4 @@ class ProductType < ApplicationRecord
   def items_count
     items.count
   end
-
 end
