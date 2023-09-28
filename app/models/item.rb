@@ -1,7 +1,7 @@
 class Item < ApplicationRecord
   belongs_to :product_type
 
-  validates :serial_number, presence: true, uniqueness: { scope: :product_type_id }, length: { maximum: 50 }
+  validates :serial_number, presence: true, uniqueness: { scope: :product_type_id }, length: { maximum: 100 }
 
   # method to mark an item as sold
 
