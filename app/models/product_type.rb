@@ -1,6 +1,8 @@
 class ProductType < ApplicationRecord
   has_many :items, dependent: :destroy
 
+  has_many :available_items, -> { where(sold: false) }, class_name: 'Item'
+
   # validations
 
   validates :name, presence: true, length: { maximum: 50 }
