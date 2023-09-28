@@ -9,11 +9,12 @@ function ProductTypesTable() {
     const [csrfToken, setCsrfToken] = useState(null);
     const [showAddPopup, setShowAddPopup] = useState(false);
     const [newProductType, setNewProductType] = useState({});
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         axios.get('http://localhost:3000/api/v1/product_types')
             .then(response => {
-                console.log(response.data);  // Add this line here
+                console.log(response.data);
                 setProductTypes(response.data);
             })
             .catch(error => {
@@ -33,16 +34,16 @@ function ProductTypesTable() {
     };
 
     const handleRemoveClick = (id) => {
-      axios.delete(`http://localhost:3000/api/v1/product_types/${id}`)
-        .then(response => {
-          if(response.status === 200){
-            const updatedProductTypes = productTypes.filter(pt => pt.id !== id);
-            setProductTypes(updatedProductTypes);
-          }
-        })
-        .catch(error => {
-          console.error("Error deleting product type:", error);
-        });
+        axios.delete(`http://localhost:3000/api/v1/product_types/${id}`)
+            .then(response => {
+                if (response.status === 200) {
+                    const updatedProductTypes = productTypes.filter(pt => pt.id !== id);
+                    setProductTypes(updatedProductTypes);
+                }
+            })
+            .catch(error => {
+                console.error("Error deleting product type:", error);
+            });
     };
 
     async function handleEditSubmit(event) {
@@ -70,55 +71,63 @@ function ProductTypesTable() {
     }
 
     const handleAddSubmit = (event) => {
-      event.preventDefault();
+        event.preventDefault();
 
-      const data = {
-          product_type: {
-              name: newProductType.name,
-              description: newProductType.description,
-              image: newProductType.image
-          }
-      };
+        const data = {
+            product_type: {
+                name: newProductType.name,
+                description: newProductType.description,
+                image: newProductType.image
+            }
+        };
 
-      axios.post('http://localhost:3000/api/v1/product_types', data, {
-          headers: {
-              'Content-Type': 'application/json',
-              'X-CSRF-Token': csrfToken // Adding CSRF Token header for Rails
-          }
-      })
-      .then(response => {
-        if (response.status === 201) {
-            alert('Product Type created successfully!');
-            const newProductWithTypeCount = {
-                ...response.data.product_type,
-                items_count: 0
-            };
-            setProductTypes(prevTypes => [...prevTypes, newProductWithTypeCount]);
-            // setProductTypes(prevTypes => [...prevTypes, response.data.product_type]);
-            setShowAddPopup(false);
-            setNewProductType({});
-        }
-      })
-      .catch(error => {
-          if (error.response && error.response.data && error.response.data.errors) {
-              alert('Error: ' + error.response.data.errors.join(', '));
-          } else {
-              alert('An unexpected error occurred.');
-          }
-      });
+        axios.post('http://localhost:3000/api/v1/product_types', data, {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': csrfToken
+            }
+        })
+        .then(response => {
+            if (response.status === 201) {
+                alert('Product Type created successfully!');
+                const newProductWithTypeCount = {
+                    ...response.data.product_type,
+                    items_count: 0
+                };
+                setProductTypes(prevTypes => [...prevTypes, newProductWithTypeCount]);
+                setShowAddPopup(false);
+                setNewProductType({});
+            }
+        })
+        .catch(error => {
+            if (error.response && error.response.data && error.response.data.errors) {
+                alert('Error: ' + error.response.data.errors.join(', '));
+            } else {
+                alert('An unexpected error occurred.');
+            }
+        });
     }
-
 
     function handleFileChange(event) {
-      const file = event.target.files[0];
-      if (file) {
-          setNewProductType(prev => ({ ...prev, image: file }));
-      }
+        const file = event.target.files[0];
+        if (file) {
+            setNewProductType(prev => ({ ...prev, image: file }));
+        }
     }
+
+    // Filter the product types based on the search term
+    const filteredProductTypes = productTypes.filter(pt => pt.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     return (
         <div>
             <button onClick={() => setShowAddPopup(true)}> Add New Product </button>
+
+            <input
+                type="text"
+                placeholder="Search by product type name..."
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+            />
 
             {isEditing && (
                 <form onSubmit={handleEditSubmit}>
@@ -167,7 +176,7 @@ function ProductTypesTable() {
                     </tr>
                 </thead>
                 <tbody>
-                    {productTypes.map(productType => (
+                    {filteredProductTypes.map(productType => (
                         <tr key={productType.id}>
                             <td>{productType.id}</td>
                             <td>{productType.name}</td>
