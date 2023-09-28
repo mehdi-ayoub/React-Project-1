@@ -56,6 +56,11 @@
   "resolved" "https://registry.npmjs.org/@rails/actioncable/-/actioncable-7.0.8.tgz"
   "version" "7.0.8"
 
+"@remix-run/router@1.9.0":
+  "integrity" "sha512-bV63itrKBC0zdT27qYm6SDZHlkXwFL1xMBuhkn+X7l0+IIhNaH5wuuvZKp6eKhCD4KFhujhfhCT1YxXW6esUIA=="
+  "resolved" "https://registry.npmjs.org/@remix-run/router/-/router-1.9.0.tgz"
+  "version" "1.9.0"
+
 "abbrev@1":
   "integrity" "sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q=="
   "resolved" "https://registry.npmjs.org/abbrev/-/abbrev-1.1.1.tgz"
@@ -613,7 +618,7 @@
   "resolved" "https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz"
   "version" "1.2.3"
 
-"react-dom@^18.2.0":
+"react-dom@^18.2.0", "react-dom@>=16.8":
   "integrity" "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   "version" "18.2.0"
@@ -621,7 +626,22 @@
     "loose-envify" "^1.1.0"
     "scheduler" "^0.23.0"
 
-"react@^18.2.0":
+"react-router-dom@^6.16.0":
+  "integrity" "sha512-aTfBLv3mk/gaKLxgRDUPbPw+s4Y/O+ma3rEN1u8EgEpLpPe6gNjIsWt9rxushMHHMb7mSwxRGdGlGdvmFsyPIg=="
+  "resolved" "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.16.0.tgz"
+  "version" "6.16.0"
+  dependencies:
+    "@remix-run/router" "1.9.0"
+    "react-router" "6.16.0"
+
+"react-router@6.16.0":
+  "integrity" "sha512-VT4Mmc4jj5YyjpOi5jOf0I+TYzGpvzERy4ckNSvSh2RArv8LLoCxlsZ2D+tc7zgjxcY34oTz2hZaeX5RVprKqA=="
+  "resolved" "https://registry.npmjs.org/react-router/-/react-router-6.16.0.tgz"
+  "version" "6.16.0"
+  dependencies:
+    "@remix-run/router" "1.9.0"
+
+"react@^18.2.0", "react@>=16.8":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
