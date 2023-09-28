@@ -7,17 +7,19 @@ function ProductTypesTable() {
     const [currentProductType, setCurrentProductType] = useState({});
     const [editedProductType, setEditedProductType] = useState({});
     const [csrfToken, setCsrfToken] = useState(null);
+    const [showAddPopup, setShowAddPopup] = useState(false);
+    const [newProductType, setNewProductType] = useState({});
 
     useEffect(() => {
         axios.get('http://localhost:3000/api/v1/product_types')
             .then(response => {
+                console.log(response.data);  // Add this line here
                 setProductTypes(response.data);
             })
             .catch(error => {
                 console.error("Error fetching data:", error);
             });
 
-        // Fetch the CSRF token from the meta tag
         const tokenElement = document.querySelector('[name="csrf-token"]');
         if (tokenElement) {
             setCsrfToken(tokenElement.getAttribute('content'));
@@ -30,36 +32,6 @@ function ProductTypesTable() {
         setIsEditing(true);
     };
 
-    async function handleEditSubmit(event) {
-      event.preventDefault();
-
-      try {
-          const response = await axios.put(`http://localhost:3000/api/v1/product_types/${currentProductType.id}`, editedProductType, {
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-Token': csrfToken
-              }
-          });
-
-          if (response.status === 200) {
-              // Merge updated product type data with the existing one to preserve the fields like 'items_count'
-              const updatedProductType = { ...currentProductType, ...response.data };
-
-              // Update the productTypes state with the merged data
-              setProductTypes(prevProductTypes => prevProductTypes.map(pt => pt.id === currentProductType.id ? updatedProductType : pt));
-
-              setIsEditing(false);
-          } else {
-              // Handle failure logic
-              console.error("Failed to update product type.");
-          }
-      } catch (error) {
-          console.error("Error updating the product type:", error);
-          console.error("Server response:", error.response.data);
-      }
-    }
-
-
     const handleRemoveClick = (id) => {
       axios.delete(`http://localhost:3000/api/v1/product_types/${id}`)
         .then(response => {
@@ -71,11 +43,83 @@ function ProductTypesTable() {
         .catch(error => {
           console.error("Error deleting product type:", error);
         });
+    };
+
+    async function handleEditSubmit(event) {
+        event.preventDefault();
+
+        try {
+            const response = await axios.put(`http://localhost:3000/api/v1/product_types/${currentProductType.id}`, editedProductType, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfToken
+                }
+            });
+
+            if (response.status === 200) {
+                const updatedProductType = { ...currentProductType, ...response.data };
+                setProductTypes(prevProductTypes => prevProductTypes.map(pt => pt.id === currentProductType.id ? updatedProductType : pt));
+                setIsEditing(false);
+            } else {
+                console.error("Failed to update product type.");
+            }
+        } catch (error) {
+            console.error("Error updating the product type:", error);
+            console.error("Server response:", error.response.data);
+        }
+    }
+
+    const handleAddSubmit = (event) => {
+      event.preventDefault();
+
+      const data = {
+          product_type: {
+              name: newProductType.name,
+              description: newProductType.description,
+              image: newProductType.image
+          }
+      };
+
+      axios.post('http://localhost:3000/api/v1/product_types', data, {
+          headers: {
+              'Content-Type': 'application/json',
+              'X-CSRF-Token': csrfToken // Adding CSRF Token header for Rails
+          }
+      })
+      .then(response => {
+        if (response.status === 201) {
+            alert('Product Type created successfully!');
+            const newProductWithTypeCount = {
+                ...response.data.product_type,
+                items_count: 0
+            };
+            setProductTypes(prevTypes => [...prevTypes, newProductWithTypeCount]);
+            // setProductTypes(prevTypes => [...prevTypes, response.data.product_type]);
+            setShowAddPopup(false);
+            setNewProductType({});
+        }
+      })
+      .catch(error => {
+          if (error.response && error.response.data && error.response.data.errors) {
+              alert('Error: ' + error.response.data.errors.join(', '));
+          } else {
+              alert('An unexpected error occurred.');
+          }
+      });
     }
 
 
+    function handleFileChange(event) {
+      const file = event.target.files[0];
+      if (file) {
+          setNewProductType(prev => ({ ...prev, image: file }));
+      }
+    }
+
     return (
         <div>
+            <button onClick={() => setShowAddPopup(true)}> Add New Product </button>
+
             {isEditing && (
                 <form onSubmit={handleEditSubmit}>
                     <label>
@@ -89,6 +133,28 @@ function ProductTypesTable() {
                     <button type="submit">Update Product Type</button>
                     <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
                 </form>
+            )}
+
+            {showAddPopup && (
+                <div className="add-popup">
+                    <h2>Add New Product Type</h2>
+                    <form onSubmit={handleAddSubmit}>
+                        <label>
+                            Name:
+                            <input type="text" value={newProductType.name || ''} onChange={e => setNewProductType({ ...newProductType, name: e.target.value })} />
+                        </label>
+                        <label>
+                            Description:
+                            <input type="text" value={newProductType.description || ''} onChange={e => setNewProductType({ ...newProductType, description: e.target.value })} />
+                        </label>
+                        <label>
+                            Image:
+                            <input type="file" onChange={handleFileChange} />
+                        </label>
+                        <button type="submit">Add Product Type</button>
+                        <button type="button" onClick={() => setShowAddPopup(false)}>Cancel</button>
+                    </form>
+                </div>
             )}
 
             <table>

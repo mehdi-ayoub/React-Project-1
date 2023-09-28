@@ -1,7 +1,7 @@
 class Api::V1::ProductTypesController < ApplicationController
   before_action :set_product_type, only: [:show, :update, :destroy]
   skip_before_action :verify_authenticity_token
-  
+
   def index
     @product_types = ProductType.all.includes(:items).map do |pt|
       {
@@ -18,6 +18,7 @@ class Api::V1::ProductTypesController < ApplicationController
   end
 
   def create
+    puts params
     @product_type = ProductType.new(product_type_params)
 
     if @product_type.save
