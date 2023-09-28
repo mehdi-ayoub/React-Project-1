@@ -27,7 +27,7 @@ function ProductTypesTable() {
             setCsrfToken(tokenElement.getAttribute('content'));
         }
     }, []);
-    // to edit the item
+    // to edit the item here
     const handleEditClick = (productType) => {
         setCurrentProductType(productType);
         setEditedProductType(productType);
