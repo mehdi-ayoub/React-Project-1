@@ -27,22 +27,32 @@ function ItemsTable() {
             });
     }, [productTypeId]);
 
-    const handleSoldChange = (itemId) => {
-        const itemToUpdate = items.find(item => item.id === itemId);
-        const updatedStatus = !itemToUpdate.sold;
 
-        fetch(`/api/v1/items/${itemId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ sold: updatedStatus })
-        })
-        .then(res => res.json())
-        .then(updatedItem => {
-            setItems(prevItems => prevItems.map(item => item.id === itemId ? updatedItem : item));
-        });
+    const handleSoldChange = (itemId) => {
+      const itemToUpdate = items.find(item => item.id === itemId);
+      const updatedStatus = !itemToUpdate.sold;
+
+      // Update the URL here
+      fetch(`http://localhost:3000/api/v1/product_types/${productTypeId}/items/${itemId}`, {
+          method: 'PATCH',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ sold: updatedStatus })
+      })
+      .then(res => {
+          if (res.ok) {
+              return res.json();
+          } else {
+              throw new Error('Failed to update sold status.');
+          }
+      })
+      .then(updatedItem => {
+          setItems(prevItems => prevItems.map(item => item.id === itemId ? updatedItem : item));
+      });
     };
+
+
 
     const handleEdit = (item) => {
       console.log("productTypeId:", productTypeId);

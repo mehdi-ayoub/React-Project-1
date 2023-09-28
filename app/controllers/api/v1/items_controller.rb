@@ -13,8 +13,14 @@ class Api::V1::ItemsController < ApplicationController
 
   # GET /items/1
   def show
-    render json: @item
+    product_type = ProductType.find(params[:id])
+    render json: {
+      id: product_type.id,
+      name: product_type.name,
+      items_count: product_type.available_items.count
+    }
   end
+
 
   # POST /items
   def create
