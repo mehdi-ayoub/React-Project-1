@@ -179,8 +179,8 @@ function ProductTypesTable() {
                 <tbody>
                     {filteredProductTypes.map(productType => (
                         <tr key={productType.id}>
+                            <td>{productType.id}</td> 
                             <td><Link to={`/items/${productType.id}`}>{productType.name}</Link></td>
-                            <td>{productType.name}</td>
                             <td>{productType.items_count}</td>
                             <td>
                                 <button onClick={() => handleEditClick(productType)}>Edit</button>
