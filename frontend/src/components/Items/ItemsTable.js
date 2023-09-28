@@ -7,27 +7,34 @@ function ItemsTable() {
     const [editingItem, setEditingItem] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
     const [newSerialNumber, setNewSerialNumber] = useState("");
-
+    const [searchTerm, setSearchTerm] = useState("");
     const productTypeId = useParams().productTypeId;
 
     useEffect(() => {
-        fetch(`http://localhost:3000/api/v1/product_types/${productTypeId}/items`)
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    throw new Error('Failed to fetch items.');
-                }
-            })
-            .then(data => {
-                setItems(data);
-                setIsLoaded(true);
-            })
-            .catch(error => {
-                setIsLoaded(true);
-                console.error("Error fetching items:", error);
-            });
-    }, [productTypeId]);
+      // Construct URL based on whether searchTerm is present
+      let url = `http://localhost:3000/api/v1/product_types/${productTypeId}/items`;
+      if (searchTerm) {
+          url += `?serial_number=${searchTerm}`;
+      }
+
+      fetch(url)
+          .then(res => {
+              if (res.ok) {
+                  return res.json();
+              } else {
+                  throw new Error('Failed to fetch items.');
+              }
+          })
+          .then(data => {
+              setItems(data);
+              setIsLoaded(true);
+          })
+          .catch(error => {
+              setIsLoaded(true);
+              console.error("Error fetching items:", error);
+          });
+    }, [productTypeId, searchTerm]);
+
 
     const handleSoldChange = (itemId) => {
         const itemToUpdate = items.find(item => item.id === itemId);
@@ -125,6 +132,12 @@ function ItemsTable() {
 
     if (!isLoaded) return <div>Loading...</div>;
 
+    // funstion to handle the search
+    const handleSearch = () => {
+      // This will update searchTerm and trigger the useEffect to fetch items based on the search.
+      setSearchTerm(searchTerm);
+    };
+
     return (
         <div>
             <button onClick={() => setModalOpen(true)}>Add New Item</button>
@@ -143,6 +156,20 @@ function ItemsTable() {
                     <button onClick={() => setModalOpen(false)}>Cancel</button>
                 </div>
             )}
+
+            {/* Search by Serial Number input */}
+
+            <div>
+                <label>
+                    Search by Serial Number:
+                    <input
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Enter serial number..."
+                    />
+                </label>
+                <button onClick={handleSearch}>Search</button>
+            </div>
 
             <table>
                 <thead>
