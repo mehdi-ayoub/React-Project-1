@@ -6,8 +6,15 @@ class Api::V1::ItemsController < ApplicationController
   protect_from_forgery with: :null_session
 
   # GET /product_types/:product_type_id/items
+# app/controllers/api/v1/items_controller.rb
+
   def index
     @items = @product_type.items
+
+    if params[:serial_number].present?
+      @items = @items.where('serial_number LIKE ?', "%#{params[:serial_number]}%")
+    end
+
     render json: @items
   end
 
