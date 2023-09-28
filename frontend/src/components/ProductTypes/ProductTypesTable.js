@@ -31,34 +31,48 @@ function ProductTypesTable() {
     };
 
     async function handleEditSubmit(event) {
-        event.preventDefault();
+      event.preventDefault();
 
-        try {
-            const response = await axios.put(`http://localhost:3000/api/v1/product_types/${currentProductType.id}`, editedProductType, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': csrfToken
-                }
-            });
+      try {
+          const response = await axios.put(`http://localhost:3000/api/v1/product_types/${currentProductType.id}`, editedProductType, {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-Token': csrfToken
+              }
+          });
 
-            if (response.status === 200) {
-                // Handle success logic, for example updating the productTypes state with the updated product type.
-                setProductTypes(prevProductTypes => prevProductTypes.map(pt => pt.id === currentProductType.id ? response.data : pt));
-                setIsEditing(false); 
-            } else {
-                // Handle failure logic
-                console.error("Failed to update product type.");
-            }
-        } catch (error) {
-            console.error("Error updating the product type:", error);
-            console.error("Server response:", error.response.data);
-        }
+          if (response.status === 200) {
+              // Merge updated product type data with the existing one to preserve the fields like 'items_count'
+              const updatedProductType = { ...currentProductType, ...response.data };
+
+              // Update the productTypes state with the merged data
+              setProductTypes(prevProductTypes => prevProductTypes.map(pt => pt.id === currentProductType.id ? updatedProductType : pt));
+
+              setIsEditing(false);
+          } else {
+              // Handle failure logic
+              console.error("Failed to update product type.");
+          }
+      } catch (error) {
+          console.error("Error updating the product type:", error);
+          console.error("Server response:", error.response.data);
+      }
     }
+
 
     const handleRemoveClick = (id) => {
-        console.log('Remove clicked for product type with ID:', id);
-        // Logic to handle removal will go here...
+      axios.delete(`http://localhost:3000/api/v1/product_types/${id}`)
+        .then(response => {
+          if(response.status === 200){
+            const updatedProductTypes = productTypes.filter(pt => pt.id !== id);
+            setProductTypes(updatedProductTypes);
+          }
+        })
+        .catch(error => {
+          console.error("Error deleting product type:", error);
+        });
     }
+
 
     return (
         <div>
