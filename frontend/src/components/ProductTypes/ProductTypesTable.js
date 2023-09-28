@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import './ProductTypesTable.css';
 
 function ProductTypesTable() {
     const [productTypes, setProductTypes] = useState([]);
@@ -119,79 +120,115 @@ function ProductTypesTable() {
     // Filter the product types based on the search term
     const filteredProductTypes = productTypes.filter(pt => pt.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
+    //---------------- start of the return funtion ----------
+
+
     return (
-        <div>
-            <button onClick={() => setShowAddPopup(true)}> Add New Product </button>
-
-            <input
-                type="text"
-                placeholder="Search by product type name..."
-                value={searchTerm}
-                onChange={e => setSearchTerm(e.target.value)}
-            />
-
-            {isEditing && (
-                <form onSubmit={handleEditSubmit}>
-                    <label>
-                        Name:
-                        <input
-                            type="text"
-                            value={editedProductType.name || ''}
-                            onChange={e => setEditedProductType({ ...editedProductType, name: e.target.value })}
-                        />
-                    </label>
-                    <button type="submit">Update Product Type</button>
-                    <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
-                </form>
-            )}
-
-            {showAddPopup && (
-                <div className="add-popup">
-                    <h2>Add New Product Type</h2>
-                    <form onSubmit={handleAddSubmit}>
-                        <label>
-                            Name:
-                            <input type="text" value={newProductType.name || ''} onChange={e => setNewProductType({ ...newProductType, name: e.target.value })} />
-                        </label>
-                        <label>
-                            Description:
-                            <input type="text" value={newProductType.description || ''} onChange={e => setNewProductType({ ...newProductType, description: e.target.value })} />
-                        </label>
-                        <label>
-                            Image:
-                            <input type="file" onChange={handleFileChange} />
-                        </label>
-                        <button type="submit">Add Product Type</button>
-                        <button type="button" onClick={() => setShowAddPopup(false)}>Cancel</button>
-                    </form>
-                </div>
-            )}
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Count</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {filteredProductTypes.map(productType => (
-                        <tr key={productType.id}>
-                            <td>{productType.id}</td> 
-                            <td><Link to={`/items/${productType.id}`}>{productType.name}</Link></td>
-                            <td>{productType.items_count}</td>
-                            <td>
-                                <button onClick={() => handleEditClick(productType)}>Edit</button>
-                                <button onClick={() => handleRemoveClick(productType.id)}>Remove</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+      <div>
+        <div className="header">
+          <p className="title">Products</p>
+          <button className="add-button" onClick={() => setShowAddPopup(true)}>Add New Product</button>
         </div>
+
+        <div className="search-container">
+          <p className="subtitle">Search Product</p>
+          <input
+            className="search-bar"
+            type="text"
+            placeholder="Search by product type name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </div>
+
+        {isEditing && (
+          <div className="add-popup">
+            <h2>Edit Product Type</h2>
+            <form onSubmit={handleEditSubmit}>
+              <div className="form-group">
+                <label>Name:</label>
+                <input
+                  type="text"
+                  value={editedProductType.name || ''}
+                  onChange={e => setEditedProductType({ ...editedProductType, name: e.target.value })}
+                />
+              </div>
+              <div className="form-group">
+                <label>Description:</label>
+                <textarea
+                  value={editedProductType.description || ''}
+                  onChange={e => setEditedProductType({ ...editedProductType, description: e.target.value })}
+                />
+              </div>
+              <div className="form-group">
+                <label>Image:</label>
+                <input type="file" onChange={handleFileChange} />
+              </div>
+              <div className="button-group">
+                <button type="submit">Update Product Type</button>
+                <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        )}
+
+
+        {showAddPopup && (
+          <div className="add-popup">
+            <h2>Add New Product Type</h2>
+            <form onSubmit={handleAddSubmit}>
+              <div className="form-group">
+                <label>Name:</label>
+                <input type="text" value={newProductType.name || ''} onChange={e => setNewProductType({ ...newProductType, name: e.target.value })} />
+              </div>
+              <div className="form-group">
+                <label>Description:</label>
+                <textarea rows="4" value={newProductType.description || ''} onChange={e => setNewProductType({ ...newProductType, description: e.target.value })}></textarea>
+              </div>
+              <div className="form-group">
+                <label>Add Image:</label>
+                <input type="file" onChange={handleFileChange} />
+              </div>
+              <div className="button-group">
+                <button type="submit">Add Product</button>
+                <button type="button" onClick={() => setShowAddPopup(false)}>Cancel</button>
+              </div>
+            </form>
+          </div>
+        )}
+
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Count</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredProductTypes.map((productType) => (
+                <tr key={productType.id}>
+                  <td>{productType.id}</td>
+                  <td><Link to={`/items/${productType.id}`}>{productType.name}</Link></td>
+                  <td>{productType.items_count}</td>
+                  <td>
+                    <button onClick={() => handleEditClick(productType)}>Edit</button>
+                    <button onClick={() => handleRemoveClick(productType.id)}>Remove</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     );
+
+
+
+    //---------------- end of the return funtion ----------
+
 }
 
 export default ProductTypesTable;
