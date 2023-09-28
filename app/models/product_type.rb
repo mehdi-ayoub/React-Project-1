@@ -3,7 +3,7 @@ class ProductType < ApplicationRecord
 
   # validations
 
-  validates :name, presence: true, length: { maximum: 15 }
+  validates :name, presence: true, length: { maximum: 50 }
   validates :description, length: { maximum: 50 }
 
   # to retrieve all the items associated with a specific product type
