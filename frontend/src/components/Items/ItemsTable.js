@@ -23,7 +23,7 @@ function ItemsTable() {
                   return res.json();
               } else {
                   throw new Error('Failed to fetch items.');
-              }
+             }
           })
           .then(data => {
               setItems(data);
@@ -110,7 +110,7 @@ function ItemsTable() {
           headers: {
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ item: { serial_number: newSerialNumber } }) // Updated this line
+          body: JSON.stringify({ item: { serial_number: newSerialNumber } })
       })
       .then(res => {
           if (!res.ok) {
@@ -121,7 +121,9 @@ function ItemsTable() {
           return res.json();
       })
       .then(newItem => {
-          setItems(prevItems => [...prevItems, newItem]);
+          console.log('Received item from backend:', newItem);
+          setItems(prevItems => [...prevItems, newItem.item]);
+          // setItems(prevItems => [...prevItems, newItem]);
           setModalOpen(false);
           setNewSerialNumber('');
       })
@@ -129,6 +131,7 @@ function ItemsTable() {
           console.error('Error adding new item:', error);
       });
     };
+
 
     if (!isLoaded) return <div>Loading...</div>;
 
