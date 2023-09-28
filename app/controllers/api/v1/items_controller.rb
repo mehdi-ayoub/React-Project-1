@@ -1,5 +1,5 @@
 class Api::V1::ItemsController < ApplicationController
-  before_action :set_product_type, only: [:index, :create, :show, :update]
+  before_action :set_product_type, only: [:index, :show, :update]
   before_action :set_item, only: [:show, :update]
 
   # Protect from CSRF attacks while allowing null session for APIs
@@ -24,7 +24,10 @@ class Api::V1::ItemsController < ApplicationController
 
   # POST /items
   def create
-    @item = Item.new(item_params)
+    @product_type = ProductType.find(params[:product_type_id])
+
+    # Build the item from the association
+    @item = @product_type.items.build(item_params)
 
     if @item.save
       render json: { message: 'Item was successfully created.', item: @item }, status: :created
@@ -32,6 +35,7 @@ class Api::V1::ItemsController < ApplicationController
       render json: { errors: @item.errors.full_messages }, status: :unprocessable_entity
     end
   end
+
 
   # PATCH/PUT /items/1
   def update
