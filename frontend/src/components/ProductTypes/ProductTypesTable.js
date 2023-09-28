@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function ProductTypesTable() {
     const [productTypes, setProductTypes] = useState([]);
@@ -178,7 +179,7 @@ function ProductTypesTable() {
                 <tbody>
                     {filteredProductTypes.map(productType => (
                         <tr key={productType.id}>
-                            <td>{productType.id}</td>
+                            <td><Link to={`/items/${productType.id}`}>{productType.name}</Link></td>
                             <td>{productType.name}</td>
                             <td>{productType.items_count}</td>
                             <td>
