@@ -5,7 +5,8 @@ function ProductTypesTable() {
     const [productTypes, setProductTypes] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [currentProductType, setCurrentProductType] = useState({});
-    const [editedProductType, setEditedProductType] = useState({}); // This will hold the data of the product type currently being edited
+    const [editedProductType, setEditedProductType] = useState({});
+    const [csrfToken, setCsrfToken] = useState(null);
 
     useEffect(() => {
         axios.get('http://localhost:3000/api/v1/product_types')
@@ -15,28 +16,44 @@ function ProductTypesTable() {
             .catch(error => {
                 console.error("Error fetching data:", error);
             });
+
+        // Fetch the CSRF token from the meta tag
+        const tokenElement = document.querySelector('[name="csrf-token"]');
+        if (tokenElement) {
+            setCsrfToken(tokenElement.getAttribute('content'));
+        }
     }, []);
 
     const handleEditClick = (productType) => {
         setCurrentProductType(productType);
-        setEditedProductType(productType); // Set the current data for the form
+        setEditedProductType(productType);
         setIsEditing(true);
     };
 
-    const handleEditSubmit = (e) => {
-        e.preventDefault();
-        axios.put(`http://localhost:3000/api/v1/product_types/${currentProductType.id}`, editedProductType)
-             .then(response => {
-                 const updatedProductTypes = productTypes.map(pt =>
-                     pt.id === currentProductType.id ? response.data : pt
-                 );
-                 setProductTypes(updatedProductTypes);
-                 setIsEditing(false);
-             })
-             .catch(error => {
-                 console.error("Error updating the product type:", error);
-             });
-    };
+    async function handleEditSubmit(event) {
+        event.preventDefault();
+
+        try {
+            const response = await axios.put(`http://localhost:3000/api/v1/product_types/${currentProductType.id}`, editedProductType, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-Token': csrfToken
+                }
+            });
+
+            if (response.status === 200) {
+                // Handle success logic, for example updating the productTypes state with the updated product type.
+                setProductTypes(prevProductTypes => prevProductTypes.map(pt => pt.id === currentProductType.id ? response.data : pt));
+                setIsEditing(false); 
+            } else {
+                // Handle failure logic
+                console.error("Failed to update product type.");
+            }
+        } catch (error) {
+            console.error("Error updating the product type:", error);
+            console.error("Server response:", error.response.data);
+        }
+    }
 
     const handleRemoveClick = (id) => {
         console.log('Remove clicked for product type with ID:', id);
@@ -52,7 +69,7 @@ function ProductTypesTable() {
                         <input
                             type="text"
                             value={editedProductType.name || ''}
-                            onChange={e => setEditedProductType({...editedProductType, name: e.target.value})}
+                            onChange={e => setEditedProductType({ ...editedProductType, name: e.target.value })}
                         />
                     </label>
                     <button type="submit">Update Product Type</button>
