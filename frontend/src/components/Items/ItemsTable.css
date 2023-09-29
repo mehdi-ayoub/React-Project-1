@@ -1,0 +1,23 @@
+.map-container {
+  width: 300px;
+  height: 300px;
+  margin-bottom: 50px;
+
+}
+
+.table-and-map {
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.table-container-main-items {
+  width: 800px;
+  margin-left: 138px;
+  margin-right: 50px;
+  margin-bottom: 50px;
+}
+
+.table-container-body-items.table-cell {
+  width: 25%; /* Adjust the width as needed */
+  padding: 4px; /* Adjust the padding as needed */
+}

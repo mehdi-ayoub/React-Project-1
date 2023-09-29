@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './ItemsTable.css';
+import GoogleMapReact from 'google-map-react';
 
 function ItemsTable() {
     const [items, setItems] = useState([]);
@@ -142,6 +143,10 @@ function ItemsTable() {
       setSearchTerm(searchTerm);
     };
 
+    const center = {
+      lat: 33.86820715541003,
+      lng: 35.55123310626341
+    }
     return (
         <div>
 
@@ -198,7 +203,8 @@ function ItemsTable() {
                 <button onClick={handleSearch}>Search</button>
             </div> */}
 
-            <table className="table-container-main">
+          <div className="table-and-map">
+            <table className="table-container-main-items">
               <thead>
                   <tr>
                       <th className="table-container-head">ID</th>
@@ -233,8 +239,17 @@ function ItemsTable() {
                       </tr>
                   ))}
               </tbody>
-          </table>
+            </table>
+            <div className="map-container">
 
+              <GoogleMapReact
+                // bootstrapURLKeys={{ key: 'AIzaSyDS0sBdeJloA0HZMAsurSewfGnEmiOw9ac' }}
+                center={center}
+                zoom = {11}
+              >
+              </GoogleMapReact>
+            </div>
+          </div>
         </div>
     );
 }

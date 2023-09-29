@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Im
 import ProductTypesTable from './components/ProductTypes/ProductTypesTable';
 import ItemsTable from './components/Items/ItemsTable';
 import Navbar from './components/Navbar/Navbar';
+// import Map from './components/Map/Map'
 
 function App() {
   return (
