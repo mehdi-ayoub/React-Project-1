@@ -243,7 +243,7 @@ function ItemsTable() {
             <div className="map-container">
 
               <GoogleMapReact
-                // bootstrapURLKeys={{ key: 'AIzaSyDS0sBdeJloA0HZMAsurSewfGnEmiOw9ac' }}
+                bootstrapURLKeys={{ key: 'AIzaSyBZtOz1stMpCRBZ3pAb2DOprPZKb-FCT2g' }}
                 center={center}
                 zoom = {11}
               >
