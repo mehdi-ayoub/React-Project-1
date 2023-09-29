@@ -172,8 +172,8 @@ function ProductTypesTable() {
                 <input type="file" onChange={handleFileChange} />
               </div>
               <div className="button-group">
-                <button type="submit">Update Product Type</button>
-                <button type="button" onClick={() => setIsEditing(false)}>Cancel</button>
+                <button className="first-header-button" style={{ marginLeft: '10px' }} type="submit">Update Product Type</button>
+                <button className="first-header-button" style={{ marginLeft: '10px' }} type="button" onClick={() => setIsEditing(false)}>Cancel</button>
               </div>
             </form>
           </div>
@@ -197,8 +197,8 @@ function ProductTypesTable() {
                 <input type="file" onChange={handleFileChange} />
               </div>
               <div className="button-group">
-                <button type="submit">Add Product</button>
-                <button type="button" onClick={() => setShowAddPopup(false)}>Cancel</button>
+                <button className="first-header-button" style={{ marginLeft: '10px' }} type="submit">Add Product</button>
+                <button className="first-header-button" style={{ marginLeft: '10px' }} type="button" onClick={() => setShowAddPopup(false)}>Cancel</button>
               </div>
             </form>
           </div>
@@ -217,10 +217,10 @@ function ProductTypesTable() {
             <tbody>
               {filteredProductTypes.map((productType) => (
                 <tr key={productType.id}>
-                  <td className="table-container-body">{productType.id}</td>
-                  <td className="table-container-body"><Link to={`/items/${productType.id}`}>{productType.name}</Link></td>
-                  <td className="table-container-body">{productType.items_count}</td>
-                  <td>
+                  <td className="table-container-body table-cell">{productType.id}</td>
+                  <td className="table-container-body table-cell"><Link to={`/items/${productType.id}`}>{productType.name}</Link></td>
+                  <td className="table-container-body table-cell">{productType.items_count}</td>
+                  <td className="table-container-body table-cell">
                     <button className="table-buttons" onClick={() => handleEditClick(productType)}>Edit</button>
                     <button className="table-buttons-remove" onClick={() => handleRemoveClick(productType.id)}>Remove</button>
                   </td>

@@ -210,8 +210,8 @@ function ItemsTable() {
               <tbody>
                   {items.map(item => (
                       <tr key={item.id}>
-                          <td>{item.id}</td>
-                          <td>
+                          <td className="table-container-body table-cell" >{item.id}</td>
+                          <td className="table-container-body table-cell" >
                               {editingItem && editingItem.id === item.id ? (
                                   <input
                                       value={editingItem.serial_number}
@@ -219,10 +219,10 @@ function ItemsTable() {
                                   />
                               ) : item.serial_number}
                           </td>
-                          <td>
+                          <td className="table-container-body table-cell" >
                               <input type="checkbox" checked={item.sold} onChange={() => handleSoldChange(item.id)} />
                           </td>
-                          <td>
+                          <td className="table-container-body table-cell" >
                               {editingItem && editingItem.id === item.id ? (
                                   <button className="first-header-button" onClick={handleSaveChanges}>Save</button>
                               ) : (

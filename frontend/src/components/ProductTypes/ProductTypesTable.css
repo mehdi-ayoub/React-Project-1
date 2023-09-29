@@ -167,6 +167,10 @@ tr:hover {
   margin-left: 1px;
 }
 
+td.table-cell {
+  border-bottom: 1px solid #dcdcdc;
+}
+
 /* ----------------------------------------------------------------- */
 /* ----------- Styling the POP UP form start here  ------------- */
 .add-popup {
