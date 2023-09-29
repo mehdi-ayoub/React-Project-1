@@ -287,15 +287,10 @@ button:hover {
 
 
 
-.banner {
-  height: 50px; /* Set the desired height */
-  width: 100%; /* Make the image span the full width of the container */
-  overflow: hidden; /* Hide any overflowing content */
-}
 
-.banner img {
-  height: 100%; /* Make the image height 100% of its parent (50px) */
-  width: auto; /* Allow the image width to adjust proportionally */
-  display: block; /* Ensure the image is a block element */
-  margin: 0 auto; /* Center the image horizontally (optional) */
+.banner-product img{
+  width: 100%;
+  height: 200px;
+  margin-top: 50px;
+  display: block;
 }

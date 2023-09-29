@@ -126,8 +126,9 @@ function ProductTypesTable() {
     return (
 
       <div>
-        <div className="banner">
-          <img src="https://example.com/your-banner-image.jpg" alt="Banner" />
+
+        <div className="banner-product">
+          <img src={process.env.PUBLIC_URL + '/images/green_landscape.jpeg'} alt="Banner" />
         </div>
 
 

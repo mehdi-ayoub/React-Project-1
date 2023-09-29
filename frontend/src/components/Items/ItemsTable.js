@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import './ItemsTable.css';
 
 function ItemsTable() {
     const [items, setItems] = useState([]);
