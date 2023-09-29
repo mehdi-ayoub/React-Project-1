@@ -302,3 +302,11 @@ button:hover {
   margin-bottom: 2rem;
   /* height: 50px; */
 }
+
+/* remove the styling from the table */
+
+.neutral-link {
+  text-decoration: none;
+  color: inherit;
+}
+
