@@ -128,7 +128,7 @@ function ProductTypesTable() {
       <div>
 
         <div className="banner-product">
-          <img src={process.env.PUBLIC_URL + '/images/green_landscape.jpeg'} alt="Banner" />
+          {/* <img src={process.env.PUBLIC_URL + '/images/green_landscape.jpeg'} alt="Banner" /> */}
         </div>
 
 

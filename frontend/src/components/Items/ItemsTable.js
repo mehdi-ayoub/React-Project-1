@@ -144,26 +144,49 @@ function ItemsTable() {
 
     return (
         <div>
-            <button onClick={() => setModalOpen(true)}>Add New Item</button>
+
+          <div className="banner-product">
+            {/* <img src={process.env.PUBLIC_URL + '/images/green_landscape.jpeg'} alt="Banner" /> */}
+          </div>
+
+          <div className="first-header-products">
+            <p className="first-header-title">Product Items</p>
+            <button className="first-header-button" onClick={() => setModalOpen(true)}>Add New Item</button>
+          </div>
 
             {modalOpen && (
-                <div>
+                <div className="add-popup"> {/* Use the same "add-popup" class */}
                     <h3>Add New Item</h3>
-                    <label>
-                        Serial Number:
-                        <input
-                            value={newSerialNumber}
-                            onChange={(e) => setNewSerialNumber(e.target.value)}
-                        />
-                    </label>
-                    <button onClick={handleAddNewItem}>Submit</button>
-                    <button onClick={() => setModalOpen(false)}>Cancel</button>
+                    <form onSubmit={handleAddNewItem}> {/* Use a <form> element for consistency */}
+                        <div className="form-group"> {/* Use the same "form-group" class */}
+                            <label>Serial Number:</label>
+                            <input
+                                value={newSerialNumber}
+                                onChange={(e) => setNewSerialNumber(e.target.value)}
+                            />
+                        </div>
+                        <div className="button-group"> {/* Use the same "button-group" class */}
+                            <button className="first-header-button" type="submit">Submit</button>
+                            <button className="first-header-button" type="button" onClick={() => setModalOpen(false)}>Cancel</button>
+                        </div>
+                    </form>
                 </div>
             )}
 
             {/* Search by Serial Number input */}
 
-            <div>
+            <div className="search-container-products">
+              <p className="search-container-subtitle">Search Item </p>
+
+              <input
+                className="search-bar-products"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Enter serial number..."
+              />
+
+            </div>
+            {/* <div>
                 <label>
                     Search by Serial Number:
                     <input
@@ -173,44 +196,45 @@ function ItemsTable() {
                     />
                 </label>
                 <button onClick={handleSearch}>Search</button>
-            </div>
+            </div> */}
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Serial Number</th>
-                        <th>SOLD</th>
-                        <th>Tools</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {items.map(item => (
-                        <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>
-                                {editingItem && editingItem.id === item.id ? (
-                                    <input
-                                        value={editingItem.serial_number}
-                                        onChange={(e) => setEditingItem(prev => ({...prev, serial_number: e.target.value}))}
-                                    />
-                                ) : item.serial_number}
-                            </td>
-                            <td>
-                                <input type="checkbox" checked={item.sold} onChange={() => handleSoldChange(item.id)} />
-                            </td>
-                            <td>
-                                {editingItem && editingItem.id === item.id ? (
-                                    <button onClick={handleSaveChanges}>Save</button>
-                                ) : (
-                                    <button onClick={() => handleEdit(item)}>Edit</button>
-                                )}
-                                <button onClick={() => handleDelete(item.id)}>Delete</button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <table className="table-container-main">
+              <thead>
+                  <tr>
+                      <th className="table-container-head">ID</th>
+                      <th className="table-container-head">Serial Number</th>
+                      <th className="table-container-head">SOLD</th>
+                      <th className="table-container-head">Tools</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {items.map(item => (
+                      <tr key={item.id}>
+                          <td>{item.id}</td>
+                          <td>
+                              {editingItem && editingItem.id === item.id ? (
+                                  <input
+                                      value={editingItem.serial_number}
+                                      onChange={(e) => setEditingItem(prev => ({...prev, serial_number: e.target.value}))}
+                                  />
+                              ) : item.serial_number}
+                          </td>
+                          <td>
+                              <input type="checkbox" checked={item.sold} onChange={() => handleSoldChange(item.id)} />
+                          </td>
+                          <td>
+                              {editingItem && editingItem.id === item.id ? (
+                                  <button className="first-header-button" onClick={handleSaveChanges}>Save</button>
+                              ) : (
+                                  <button className="first-header-button" onClick={() => handleEdit(item)}>Edit</button>
+                              )}
+                              <button className="first-header-button" style={{ marginLeft: '10px' }} onClick={() => handleDelete(item.id)}>Delete</button>
+                          </td>
+                      </tr>
+                  ))}
+              </tbody>
+          </table>
+
         </div>
     );
 }
