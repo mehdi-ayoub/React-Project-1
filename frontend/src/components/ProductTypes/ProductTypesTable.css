@@ -11,23 +11,26 @@
   box-sizing: border-box;
 }
 
-/* Apply styles to the header container */
-.header {
+
+/* ----------------------------------------------------------------- */
+
+/* --------------  Apply styles to the header container  ---------------*/
+.first-header-products {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin: 42px 139px 42px 139px;
 }
 
 /* Style the Products title */
-.title {
+.first-header-title {
   font-size: 24px;
   font-weight: bold;
 }
 
 /* Style the Add New Product button */
-.add-button {
-  background-color: #007BFF;
+.first-header-button {
+  background-color: #3B6239;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -36,39 +39,51 @@
   transition: background-color 0.2s;
 }
 
-.add-button:hover {
-  background-color: #0056b3;
+.first-header-button:hover {
+  background-color: #63a35f;
 }
 
-/* Apply styles to the search container */
-.search-container {
+/* -----------  End of  styles to the header container  ---------*/
+/* ----------------------------------------------------------------- */
+
+
+
+/* ----------------Apply styles to the search container -----------------*/
+.search-container-products {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   margin-bottom: 20px;
+  width:fit-content;
 }
 
 /* Style the Search Product title */
-.subtitle {
+.search-container-subtitle {
   font-size: 20px;
   font-weight: bold;
+  margin-left: 139px;
 }
 
 /* Style the search bar */
-.search-bar {
-  width: 50%;
+.search-bar-products {
+  width: 100%;
   padding: 10px 20px;
   border: 2px solid #007BFF;
   border-radius: 5px;
-  margin-top: 10px;
+  margin-left: 139px;
+
 }
 
 .search-bar::placeholder {
   color: #ccc;
 }
 
+/* -------------  End of  styles to the search container  --------------*/
+/* -------------------------------------------------------------------- */
+
+
 /* Apply styles to the table container */
-.table-container {
+.table-container-main {
   width: 80%;
   margin: 0 auto;
   overflow-x: auto; /* Enable horizontal scrolling if necessary */
@@ -80,15 +95,18 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
-  padding: 15px;
+.table-container-head {
+  color: white;
+  background-color: #3B6239;
   text-align: center;
-  border-bottom: 1px solid #dcdcdc;
+  padding: 8px;
 }
 
-th:last-child,
-td:last-child {
-  border-right: 1px solid #dcdcdc;
+
+td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #7b7a7a;
 }
 
 /* Remove border from the last row */
@@ -96,15 +114,57 @@ tr:last-child {
   border-bottom: none;
 }
 
-/* Style table header */
-thead {
-  background-color: #f0f0f0;
-  font-weight: bold;
+.table-container-body a.link {
+  text-decoration: none !important;
+  color: black !important;
 }
 
 /* Highlight table rows on hover */
 tr:hover {
   background-color: #f5f5f5;
+}
+
+.table-buttons {
+  background-color: #3B6239;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.table-buttons-remove {
+  background-color: #3B6239;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: 1px;
+}
+
+.table-buttons:hover {
+  background-color: #63a35f;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: 1px;
+}
+
+.table-buttons-remove:hover {
+  background-color: #f43939;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: 1px;
 }
 
 /* ----------------------------------------------------------------- */
@@ -224,3 +284,13 @@ button:hover {
 
 
 /* --------- END OF Styling the edit form start here  ---------- */
+
+
+
+
+.banner-product img{
+  width: 100%;
+  height: 200px;
+  margin-top: 50px;
+  display: block;
+}

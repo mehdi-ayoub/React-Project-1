@@ -124,16 +124,23 @@ function ProductTypesTable() {
 
 
     return (
+
       <div>
-        <div className="header">
-          <p className="title">Products</p>
-          <button className="add-button" onClick={() => setShowAddPopup(true)}>Add New Product</button>
+
+        <div className="banner-product">
+          <img src={process.env.PUBLIC_URL + '/images/green_landscape.jpeg'} alt="Banner" />
         </div>
 
-        <div className="search-container">
-          <p className="subtitle">Search Product</p>
+
+        <div className="first-header-products">
+          <p className="first-header-title">Products</p>
+          <button className="first-header-button" onClick={() => setShowAddPopup(true)}>Add New Product</button>
+        </div>
+
+        <div className="search-container-products">
+          <p className="search-container-subtitle">Search Product</p>
           <input
-            className="search-bar"
+            className="search-bar-products"
             type="text"
             placeholder="Search by product type name..."
             value={searchTerm}
@@ -197,31 +204,32 @@ function ProductTypesTable() {
           </div>
         )}
 
-        <div className="table-container">
+        <div className="table-container-main">
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Count</th>
-                <th>Actions</th>
+                <th className="table-container-head">ID</th>
+                <th className="table-container-head">Name</th>
+                <th className="table-container-head">Count</th>
+                <th className="table-container-head">Actions</th>
               </tr>
             </thead>
             <tbody>
               {filteredProductTypes.map((productType) => (
                 <tr key={productType.id}>
-                  <td>{productType.id}</td>
-                  <td><Link to={`/items/${productType.id}`}>{productType.name}</Link></td>
-                  <td>{productType.items_count}</td>
+                  <td className="table-container-body">{productType.id}</td>
+                  <td className="table-container-body"><Link to={`/items/${productType.id}`}>{productType.name}</Link></td>
+                  <td className="table-container-body">{productType.items_count}</td>
                   <td>
-                    <button onClick={() => handleEditClick(productType)}>Edit</button>
-                    <button onClick={() => handleRemoveClick(productType.id)}>Remove</button>
+                    <button className="table-buttons" onClick={() => handleEditClick(productType)}>Edit</button>
+                    <button className="table-buttons-remove" onClick={() => handleRemoveClick(productType.id)}>Remove</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+
       </div>
     );
 
