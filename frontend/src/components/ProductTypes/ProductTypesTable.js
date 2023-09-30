@@ -186,7 +186,7 @@ function ProductTypesTable() {
         {showAddPopup && (
           <div className="add-popup">
             <h2>Add New Product Type</h2>
-            <form onSubmit={handleAddSubmit}>
+            <form onSubmit={handleAddSubmit}>s
               <div className="form-group">
                 <label>Name:</label>
                 <input type="text" value={newProductType.name || ''} onChange={e => setNewProductType({ ...newProductType, name: e.target.value })} />
