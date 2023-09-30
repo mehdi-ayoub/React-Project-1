@@ -30,17 +30,18 @@
 
 /* Style the Add New Product button */
 .first-header-button {
-  background-color: #3B6239;
-  color: white;
+  background-color: #ffcd00;
+  color: #00426b;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s;
+  margin-left: 2px;
 }
 
 .first-header-button:hover {
-  background-color: #63a35f;
+  background-color: #f7e8ac;
 }
 
 /* -----------  End of  styles to the header container  ---------*/
@@ -96,8 +97,8 @@ table {
 }
 
 .table-container-head {
-  color: white;
-  background-color: #3B6239;
+  color: #00426b;
+  background-color: #ffcd00;
   text-align: center;
   padding: 8px;
 }
@@ -125,8 +126,8 @@ tr:hover {
 }
 
 .table-buttons {
-  background-color: #3B6239;
-  color: white;
+  background-color: #ffcd00;
+  color: #00426b;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -135,8 +136,8 @@ tr:hover {
 }
 
 .table-buttons-remove {
-  background-color: #3B6239;
-  color: white;
+  background-color: #ffcd00;
+  color: #00426b;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -146,8 +147,8 @@ tr:hover {
 }
 
 .table-buttons:hover {
-  background-color: #63a35f;
-  color: white;
+  background-color: #f7e8ac;
+  color: #00426b;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -157,8 +158,8 @@ tr:hover {
 }
 
 .table-buttons-remove:hover {
-  background-color: #f43939;
-  color: white;
+  background-color: #f7e8ac;
+  color: #00426b;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -309,4 +310,3 @@ button:hover {
   text-decoration: none;
   color: inherit;
 }
-

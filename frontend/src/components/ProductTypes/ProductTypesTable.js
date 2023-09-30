@@ -210,6 +210,7 @@ function ProductTypesTable() {
               <tr>
                 <th className="table-container-head">ID</th>
                 <th className="table-container-head">Name</th>
+                <th className="table-container-head">Description</th>
                 <th className="table-container-head">Count</th>
                 <th className="table-container-head">Actions</th>
               </tr>
@@ -219,6 +220,7 @@ function ProductTypesTable() {
                 <tr key={productType.id}>
                   <td className="table-container-body table-cell">{productType.id}</td>
                   <td className="table-container-body table-cell"><Link className="neutral-link" to={`/items/${productType.id}`}>{productType.name}</Link></td>
+                  <td className="table-container-body table-cell">{productType.description}</td>
                   <td className="table-container-body table-cell">{productType.items_count}</td>
                   <td className="table-container-body table-cell">
                     <button className="table-buttons" onClick={() => handleEditClick(productType)}>Edit</button>
