@@ -125,7 +125,6 @@ function ItemsTable() {
       .then(newItem => {
           console.log('Received item from backend:', newItem);
           setItems(prevItems => [...prevItems, newItem.item]);
-          // setItems(prevItems => [...prevItems, newItem]);
           setModalOpen(false);
           setNewSerialNumber('');
       })
