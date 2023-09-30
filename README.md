@@ -1,6 +1,6 @@
 # Wakilni - Inventory Managment
 
-** User Stories :
+ <h2> User Stories : </h2>
 
 * As a User, I can display the total number of product types in a table.
 * As a User, I can search for the product by the product by product name.
