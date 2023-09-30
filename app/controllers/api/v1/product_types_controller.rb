@@ -7,7 +7,8 @@ class Api::V1::ProductTypesController < ApplicationController
       {
         id: pt.id,
         name: pt.name,
-        items_count: pt.items.where(sold: false).count # This line calculates the total count for each ProductType's items
+        items_count: pt.items.where(sold: false).count,
+        description: pt.description
       }
     end
     render json: @product_types
