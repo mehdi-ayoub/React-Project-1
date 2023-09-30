@@ -294,8 +294,8 @@ button:hover {
 
 
 .banner-product {
-  background-image: url('/images/green_landscape.jpeg'); /* Relative path to the image */
-  background-size: cover;
+  background-image: url('/images/warehouse.jpeg'); /* Relative path to the image */
+  background-size: contain;
   background-position: center;
   margin: auto;
   margin-top: 40px;
