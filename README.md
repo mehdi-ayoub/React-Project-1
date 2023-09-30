@@ -10,6 +10,3 @@
 * As a User, I can click on a product type in the table and see all the items corresponding to this product.
 * As a User, I can display al the items of the corresponding product type.
 * As a User, I can edit, delete and add an item.
-
-
-* ...
