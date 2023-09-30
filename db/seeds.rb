@@ -14,7 +14,7 @@ product_type_descriptions = [
 ]
 
 product_images = [
-  'laptop.jpg', 'smartphone.jpg', 'headphones.jpg', 'monitor.jpg', 'keyboard.jpg',
+  'laptop.jpeg', 'smartphone.jpg', 'headphones.jpg', 'monitor.jpg', 'keyboard.jpg',
   'mouse.jpg', 'tablet.jpg', 'smartwatch.jpg', 'camera.jpg', 'printer.jpg',
   'router.jpg', 'harddrive.jpg', 'speaker.jpg', 'charger.jpg', 'usbcable.jpg'
 ]
