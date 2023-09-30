@@ -17,12 +17,25 @@
 ![Product Types Page](https://github.com/mehdi-ayoub/wakilni-project/assets/139541872/1488cf87-ef64-4673-b843-45930c239000)
 
 
-<h3>  Search For A Product </h3>
+<h3>  Search For a Product </h3>
 
 ![Search Product](https://github.com/mehdi-ayoub/wakilni-project/assets/139541872/99779b5f-8cd3-4577-a365-fa51639b223a)
 
 
-<h3>  Search For A Product </h3>
-
+<h3>  Add a Product </h3>
 
 ![Screen Shot 2023-09-30 at 1 56 55 PM](https://github.com/mehdi-ayoub/wakilni-project/assets/139541872/df7c1bfe-2d18-445e-b6d8-15e0d2887646)
+
+<h3>  Edit a Product </h3>
+
+![Screen Shot 2023-09-30 at 1 59 05 PM](https://github.com/mehdi-ayoub/wakilni-project/assets/139541872/509c034d-5c1b-44c3-a1fa-6cd8f8bcfbce)
+
+
+<h3> Items Page </h3>
+
+![Screen Shot 2023-09-30 at 2 01 44 PM](https://github.com/mehdi-ayoub/wakilni-project/assets/139541872/72072cf7-7600-40fc-9af0-31d03880584e)
+
+
+<h4> Items Table and Sold checkbox option </h4>
+
+![Screen Shot 2023-09-30 at 2 03 10 PM](https://github.com/mehdi-ayoub/wakilni-project/assets/139541872/022e19a6-c4d3-42aa-9c58-cb854e4d7e53)
