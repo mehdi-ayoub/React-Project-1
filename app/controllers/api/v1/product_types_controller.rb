@@ -8,7 +8,8 @@ class Api::V1::ProductTypesController < ApplicationController
         id: pt.id,
         name: pt.name,
         items_count: pt.items.where(sold: false).count,
-        description: pt.description
+        description: pt.description,
+        image: pt.image
       }
     end
     render json: @product_types

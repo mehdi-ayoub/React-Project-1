@@ -17,6 +17,7 @@ function ProductTypesTable() {
         axios.get('http://localhost:3000/api/v1/product_types')
             .then(response => {
                 console.log(response.data);
+                console.log(response.data)
                 setProductTypes(response.data);
             })
             .catch(error => {
@@ -82,6 +83,7 @@ function ProductTypesTable() {
                 image: newProductType.image
             }
         };
+        console.log(data,'dataaaaaaaaa')
 
         axios.post('http://localhost:3000/api/v1/product_types', data, {
             headers: {
@@ -111,10 +113,11 @@ function ProductTypesTable() {
     }
 
     function handleFileChange(event) {
-        const file = event.target.files[0];
-        if (file) {
-            setNewProductType(prev => ({ ...prev, image: file }));
-        }
+        // const file = event.target.files[0];
+        // console.log(file,'fileeeeeeeeeeeeeeeee')
+        // if (file) {
+        //     setNewProductType(prev => ({ ...prev, image: file.name }));
+        // }
     }
 
     // Filter the product types based on the search term
@@ -217,9 +220,14 @@ function ProductTypesTable() {
             </thead>
             <tbody>
               {filteredProductTypes.map((productType) => (
+
                 <tr key={productType.id}>
+                  {console.log(productType.image,'image')}
                   <td className="table-container-body table-cell">{productType.id}</td>
-                  <td className="table-container-body table-cell"><Link className="neutral-link" to={`/items/${productType.id}`}>{productType.name}</Link></td>
+                  <td className="table-container-body table-cell">
+                    <Link className="neutral-link" to={`/items/${productType.id}`}>{productType.name}</Link>
+                    <img src={`/images/${productType.image}`} width={44} height={44} alt="Description of Image" />
+                  </td>
                   <td className="table-container-body table-cell">{productType.description}</td>
                   <td className="table-container-body table-cell">{productType.items_count}</td>
                   <td className="table-container-body table-cell">
