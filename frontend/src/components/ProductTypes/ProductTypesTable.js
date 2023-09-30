@@ -208,11 +208,14 @@ function ProductTypesTable() {
               <tr>
                 <th className="table-container-head">ID</th>
                 <th className="table-container-head">Name</th>
+                <th className="table-container-head">Image</th>
                 <th className="table-container-head">Description</th>
                 <th className="table-container-head">Count</th>
                 <th className="table-container-head">Actions</th>
               </tr>
             </thead>
+
+{/*
             <tbody>
               {filteredProductTypes.map((productType) => (
 
@@ -221,8 +224,8 @@ function ProductTypesTable() {
                   <td className="table-container-body table-cell">{productType.id}</td>
                   <td className="table-container-body table-cell">
                     <Link className="neutral-link" to={`/items/${productType.id}`}>{productType.name}</Link>
-                    <img src={`/images/${productType.image}`} width={44} height={44} alt="" />
                   </td>
+                  <td className="table-container-body table-cell">  <img src={`/images/${productType.image}`} width={44} height={44} alt="" /> </td>
                   <td className="table-container-body table-cell">{productType.description}</td>
                   <td className="table-container-body table-cell">{productType.items_count}</td>
                   <td className="table-container-body table-cell">
@@ -232,6 +235,56 @@ function ProductTypesTable() {
                 </tr>
               ))}
             </tbody>
+ */}
+            <tbody>
+              {filteredProductTypes.map((productType) => (
+                <tr
+                  key={productType.id}
+                  onClick={() => {
+                    window.location.href = `/items/${productType.id}`;
+                  }}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <td className="table-container-body table-cell">{productType.id}</td>
+                  <td className="table-container-body table-cell">{productType.name}</td>
+                  <td className="table-container-body table-cell">
+                    <img
+                      src={`/images/${productType.image}`}
+                      width={44}
+                      height={44}
+                      alt=""
+                    />
+                  </td>
+                  <td className="table-container-body table-cell">
+                    {productType.description}
+                  </td>
+                  <td className="table-container-body table-cell">
+                    {productType.items_count}
+                  </td>
+                  <td className="table-container-body table-cell">
+                    <button
+                      className="table-buttons"
+                      onClick={(e) => {
+                        e.stopPropagation(); // This prevents the row's click event from being fired
+                        handleEditClick(productType);
+                      }}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="table-buttons-remove"
+                      onClick={(e) => {
+                        e.stopPropagation(); // This prevents the row's click event from being fired
+                        handleRemoveClick(productType.id);
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+
           </table>
         </div>
 
