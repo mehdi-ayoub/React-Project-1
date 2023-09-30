@@ -18,6 +18,7 @@
 
 
 <h3>  Search For A Product </h3>
-![Product Types Page](https://github.com/mehdi-ayoub/wakilni-project/assets/139541872/1488cf87-ef64-4673-b843-45930c239000)
+
+![Search Product](https://github.com/mehdi-ayoub/wakilni-project/assets/139541872/99779b5f-8cd3-4577-a365-fa51639b223a)
 
 
