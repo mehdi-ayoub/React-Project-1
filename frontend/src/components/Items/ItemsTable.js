@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './ItemsTable.css';
 import GoogleMapReact from 'google-map-react';
-
+import {
+  fetchItemsRequest,
+  soldItemRequest,
+  addItemRequest,
+  deleteItemRequest,
+  editItemRequest
+} from '../../services/item';
 function ItemsTable() {
     const [items, setItems] = useState([]);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -13,51 +19,37 @@ function ItemsTable() {
     const productTypeId = useParams().productTypeId;
 
     useEffect(() => {
-      // Construct URL based on whether searchTerm is present
-      let url = `http://localhost:3000/api/v1/product_types/${productTypeId}/items`;
-      if (searchTerm) {
-          url += `?serial_number=${searchTerm}`;
-      }
-
-      fetch(url)
-          .then(res => {
-              if (res.ok) {
-                  return res.json();
-              } else {
-                  throw new Error('Failed to fetch items.');
-             }
-          })
-          .then(data => {
-              setItems(data);
-              setIsLoaded(true);
-          })
-          .catch(error => {
-              setIsLoaded(true);
-              console.error("Error fetching items:", error);
-          });
+        fetchItems()
     }, [productTypeId, searchTerm]);
+
+    const fetchItems= ()=>{
+      fetchItemsRequest(searchTerm,productTypeId)
+      .then(response => {
+        console.log(response.data,'itemssssssss')
+        setItems(response.data);
+        setIsLoaded(true);
+      })
+      .catch(error => {
+        setIsLoaded(true);
+        console.error("Error fetching items:", error);
+      });
+    }
 
 
     const handleSoldChange = (itemId) => {
         const itemToUpdate = items.find(item => item.id === itemId);
         const updatedStatus = !itemToUpdate.sold;
-
-        fetch(`http://localhost:3000/api/v1/product_types/${productTypeId}/items/${itemId}`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ sold: updatedStatus })
+        soldItemRequest(productTypeId,itemId,JSON.stringify({ sold: updatedStatus }))
+        .then(response => {
+          if (response.status==200){
+            setItems(prevItems => prevItems.map(item => item.id === itemId ? response.data : item));
+          }
+          else{
+            console.error("Error updating items:");
+          }
         })
-        .then(res => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                throw new Error('Failed to update sold status.');
-            }
-        })
-        .then(updatedItem => {
-            setItems(prevItems => prevItems.map(item => item.id === itemId ? updatedItem : item));
+        .catch(error => {
+          console.error("Error updating items:", error);
         });
     };
 
@@ -66,68 +58,42 @@ function ItemsTable() {
     };
 
     const handleSaveChanges = () => {
-        if (editingItem) {
-            const url = `http://localhost:3000/api/v1/product_types/${productTypeId}/items/${editingItem.id}`;
-            fetch(url, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ item: { serial_number: editingItem.serial_number } })
-            })
-            .then(res => {
-                if (res.ok) {
-                    setItems(prevItems => prevItems.map(item => item.id === editingItem.id ? editingItem : item));
-                    setEditingItem(null); // Exit edit mode
-                } else {
-                    throw new Error('Failed to update the item');
-                }
-            })
-            .catch(error => {
-                console.error('Error updating item:', error);
-            });
-        }
+      if (editingItem) {
+        editItemRequest(productTypeId,editingItem.id,JSON.stringify({ item: { serial_number: editingItem.serial_number } }) )
+        .then(response => {
+          if(response.status==200){
+            setItems(prevItems => prevItems.map(item => item.id === editingItem.id ? editingItem : item));
+            setEditingItem(null); // Exit edit mode
+          }
+        })
+        .catch(error => {
+          console.error('Error updating item:', error);
+        });
+      }
     };
 
     const handleDelete = (itemId) => {
-        fetch(`http://localhost:3000/api/v1/product_types/${productTypeId}/items/${itemId}`, { method: 'DELETE' })
-            .then(res => {
-                if (res.ok) {
-                    return res.json();
-                } else {
-                    throw new Error('Failed to delete item');
-                }
-            })
-            .then(() => {
-                setItems(prevItems => prevItems.filter(item => item.id !== itemId));
-            })
-            .catch(error => {
-                console.error('Error deleting item:', error);
-            });
+      deleteItemRequest(productTypeId,itemId)
+      .then(() => {
+        setItems(prevItems => prevItems.filter(item => item.id !== itemId));
+      })
+      .catch(error => {
+        console.error('Error deleting item:', error);
+      });
     };
 
-    const handleAddNewItem = () => {
-      fetch(`http://localhost:3000/api/v1/product_types/${productTypeId}/items`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ item: { serial_number: newSerialNumber } })
-      })
-      .then(res => {
-          if (!res.ok) {
-              return res.json().then(err => {
-                  throw new Error(err.message || 'Failed to add the new item');
-              });
-          }
-          return res.json();
-      })
-      .then(newItem => {
-          console.log('Received item from backend:', newItem);
-          setItems(prevItems => [...prevItems, newItem.item]);
-          // setItems(prevItems => [...prevItems, newItem]);
+    const handleAddNewItem = (event) => {
+      event.preventDefault();
+      addItemRequest(productTypeId,JSON.stringify({ item: { serial_number: newSerialNumber, sold:false } }))
+      .then(response => {
+        if(response.status==201){
+          setItems(prevItems => [...prevItems, response.data.item]);
           setModalOpen(false);
           setNewSerialNumber('');
+        }
+        else{
+          console.error('Error adding new item:');
+        }
       })
       .catch(error => {
           console.error('Error adding new item:', error);
@@ -136,12 +102,6 @@ function ItemsTable() {
 
 
     if (!isLoaded) return <div>Loading...</div>;
-
-    // funstion to handle the search
-    const handleSearch = () => {
-      // This will update searchTerm and trigger the useEffect to fetch items based on the search.
-      setSearchTerm(searchTerm);
-    };
 
     const center = {
       lat: 33.86820715541003,
