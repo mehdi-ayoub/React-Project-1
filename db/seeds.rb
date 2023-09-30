@@ -1,4 +1,6 @@
 # db/seeds.rb
+Item.destroy_all
+ProductType.delete_all
 
 # Product Types data
 product_type_names = [
