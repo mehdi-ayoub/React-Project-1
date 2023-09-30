@@ -8,6 +8,7 @@ import {
   editProductRequest,
   addProductRequest
 } from '../../services/productType';
+
 function ProductTypesTable() {
     const [productTypes, setProductTypes] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -45,16 +46,16 @@ function ProductTypesTable() {
     };
 
     const handleRemoveClick = (id) => {
-        deleteProductRequest(id)
-        .then(response => {
-            if (response.status === 200) {
-                const updatedProductTypes = productTypes.filter(pt => pt.id !== id);
-                setProductTypes(updatedProductTypes);
-            }
-        })
-        .catch(error => {
-            console.error("Error deleting product type:", error);
-        });
+      deleteProductRequest(id)
+      .then(response => {
+          if (response.status === 200) {
+            const updatedProductTypes = productTypes.filter(pt => pt.id !== id);
+            setProductTypes(updatedProductTypes);
+          }
+      })
+      .catch(error => {
+          console.error("Error deleting product type:", error);
+      });
     };
 
     const handleEditSubmit=(event)=> {
@@ -80,29 +81,29 @@ function ProductTypesTable() {
           product_type: {
               name: newProductType.name,
               description: newProductType.description,
-              image: newProductType.image
+              image: newProductType.image && productTypes.image!='' ?newProductType.image: 'laptop.jpeg'
           }
       };
 
       addProductRequest(data, csrfToken)
       .then(response => {
-          if (response.status === 201) {
-              alert('Product Type created successfully!');
-              const newProductWithTypeCount = {
-                  ...response.data.product_type,
-                  items_count: 0
-              };
-              setProductTypes(prevTypes => [...prevTypes, newProductWithTypeCount]);
-              setShowAddPopup(false);
-              setNewProductType({});
-          }
+        if (response.status === 201) {
+            alert('Product Type created successfully!');
+            const newProductWithTypeCount = {
+                ...response.data.product_type,
+                items_count: 0
+            };
+            setProductTypes(prevTypes => [...prevTypes, newProductWithTypeCount]);
+            setShowAddPopup(false);
+            setNewProductType({});
+        }
       })
       .catch(error => {
-          if (error.response && error.response.data && error.response.data.errors) {
-              alert('Error: ' + error.response.data.errors.join(', '));
-          } else {
-              alert('An unexpected error occurred.');
-          }
+        if (error.response && error.response.data && error.response.data.errors) {
+            alert('Error: ' + error.response.data.errors.join(', '));
+        } else {
+            alert('An unexpected error occurred.');
+        }
       });
     }
 
@@ -220,7 +221,7 @@ function ProductTypesTable() {
                   <td className="table-container-body table-cell">{productType.id}</td>
                   <td className="table-container-body table-cell">
                     <Link className="neutral-link" to={`/items/${productType.id}`}>{productType.name}</Link>
-                    <img src={`/images/${productType.image}`} width={44} height={44} alt="Description of Image" />
+                    <img src={`/images/${productType.image}`} width={44} height={44} alt="" />
                   </td>
                   <td className="table-container-body table-cell">{productType.description}</td>
                   <td className="table-container-body table-cell">{productType.items_count}</td>
