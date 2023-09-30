@@ -2,7 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import './ProductTypesTable.css';
-
+import {
+  fetchProductsRequest,
+  deleteProductRequest,
+  editProductRequest,
+  addProductRequest
+} from '../../services/productType';
 function ProductTypesTable() {
     const [productTypes, setProductTypes] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
@@ -14,21 +19,24 @@ function ProductTypesTable() {
     const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
-        axios.get('http://localhost:3000/api/v1/product_types')
-            .then(response => {
-                console.log(response.data);
-                console.log(response.data)
-                setProductTypes(response.data);
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
-
-        const tokenElement = document.querySelector('[name="csrf-token"]');
-        if (tokenElement) {
-            setCsrfToken(tokenElement.getAttribute('content'));
-        }
+      fetchProducts()
     }, []);
+
+    const fetchProducts=()=>{
+      fetchProductsRequest()
+      .then(response => {
+          setProductTypes(response.data);
+      })
+      .catch(error => {
+          console.error("Error fetching data:", error);
+      });
+
+      const tokenElement = document.querySelector('[name="csrf-token"]');
+      if (tokenElement) {
+          setCsrfToken(tokenElement.getAttribute('content'));
+      }
+    }
+
     // to edit the item here
     const handleEditClick = (productType) => {
         setCurrentProductType(productType);
@@ -37,79 +45,65 @@ function ProductTypesTable() {
     };
 
     const handleRemoveClick = (id) => {
-        axios.delete(`http://localhost:3000/api/v1/product_types/${id}`)
-            .then(response => {
-                if (response.status === 200) {
-                    const updatedProductTypes = productTypes.filter(pt => pt.id !== id);
-                    setProductTypes(updatedProductTypes);
-                }
-            })
-            .catch(error => {
-                console.error("Error deleting product type:", error);
-            });
-    };
-
-    async function handleEditSubmit(event) {
-        event.preventDefault();
-
-        try {
-            const response = await axios.put(`http://localhost:3000/api/v1/product_types/${currentProductType.id}`, editedProductType, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': csrfToken
-                }
-            });
-
-            if (response.status === 200) {
-                const updatedProductType = { ...currentProductType, ...response.data };
-                setProductTypes(prevProductTypes => prevProductTypes.map(pt => pt.id === currentProductType.id ? updatedProductType : pt));
-                setIsEditing(false);
-            } else {
-                console.error("Failed to update product type.");
-            }
-        } catch (error) {
-            console.error("Error updating the product type:", error);
-            console.error("Server response:", error.response.data);
-        }
-    }
-
-    const handleAddSubmit = (event) => {
-        event.preventDefault();
-
-        const data = {
-            product_type: {
-                name: newProductType.name,
-                description: newProductType.description,
-                image: newProductType.image
-            }
-        };
-        console.log(data,'dataaaaaaaaa')
-
-        axios.post('http://localhost:3000/api/v1/product_types', data, {
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-Token': csrfToken
-            }
-        })
+        deleteProductRequest(id)
         .then(response => {
-            if (response.status === 201) {
-                alert('Product Type created successfully!');
-                const newProductWithTypeCount = {
-                    ...response.data.product_type,
-                    items_count: 0
-                };
-                setProductTypes(prevTypes => [...prevTypes, newProductWithTypeCount]);
-                setShowAddPopup(false);
-                setNewProductType({});
+            if (response.status === 200) {
+                const updatedProductTypes = productTypes.filter(pt => pt.id !== id);
+                setProductTypes(updatedProductTypes);
             }
         })
         .catch(error => {
-            if (error.response && error.response.data && error.response.data.errors) {
-                alert('Error: ' + error.response.data.errors.join(', '));
-            } else {
-                alert('An unexpected error occurred.');
-            }
+            console.error("Error deleting product type:", error);
         });
+    };
+
+    const handleEditSubmit=(event)=> {
+        event.preventDefault();
+        editProductRequest(currentProductType.id,editedProductType, csrfToken)
+        .then(response => {
+          if (response.status === 200) {
+            const updatedProductType = { ...currentProductType, ...response.data };
+            setProductTypes(prevProductTypes => prevProductTypes.map(pt => pt.id === currentProductType.id ? updatedProductType : pt));
+            setIsEditing(false);
+          } else {
+              console.error("Failed to update product type.");
+          }
+        })
+        .catch(error => {
+          console.error("Error updating the product type:", error);
+        });
+    }
+
+    const handleAddSubmit = (event) => {
+      event.preventDefault();
+      const data = {
+          product_type: {
+              name: newProductType.name,
+              description: newProductType.description,
+              image: newProductType.image
+          }
+      };
+
+      addProductRequest(data, csrfToken)
+      .then(response => {
+          if (response.status === 201) {
+              alert('Product Type created successfully!');
+              const newProductWithTypeCount = {
+                  ...response.data.product_type,
+                  items_count: 0
+              };
+              setProductTypes(prevTypes => [...prevTypes, newProductWithTypeCount]);
+              setShowAddPopup(false);
+              setNewProductType({});
+          }
+      })
+      .catch(error => {
+          if (error.response && error.response.data && error.response.data.errors) {
+              alert('Error: ' + error.response.data.errors.join(', '));
+          } else {
+              alert('An unexpected error occurred.');
+          }
+      });
     }
 
     function handleFileChange(event) {
